@@ -15,9 +15,17 @@ namespace MVC5_Week1.Controllers
         private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
-            return View(db.客戶資料.Where(q => q.isDelete != true).ToList());
+            if (!string.IsNullOrEmpty(search))
+            {
+                var data = db.客戶資料.Where(p => p.客戶名稱.Contains(search) && p.isDelete != true);
+                return View(data);
+            }
+            else
+            {
+                return View(db.客戶資料.Where(q => q.isDelete != true).ToList());
+            }
         }
 
         // GET: 客戶資料/Details/5
@@ -50,9 +58,17 @@ namespace MVC5_Week1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.客戶資料.Where(q => q.Email == 客戶資料.Email).Count() > 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Email重複");
+                }
+                else
+                {
+                    db.客戶資料.Add(客戶資料);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                
             }
 
             return View(客戶資料);

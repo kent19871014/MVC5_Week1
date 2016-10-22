@@ -15,10 +15,18 @@ namespace MVC5_Week1.Controllers
         private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶聯絡人
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.Where(q => q.isDelete != true).ToList());
+            if (!string.IsNullOrEmpty(search))
+            {
+                var data = db.客戶聯絡人.Where(p => p.姓名.Contains(search) && p.isDelete != true);
+                return View(data);
+            }
+            else
+            {
+                var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+                return View(客戶聯絡人.Where(q => q.isDelete != true).ToList());
+            }
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -52,9 +60,16 @@ namespace MVC5_Week1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.客戶聯絡人.Where(q => q.Email == 客戶聯絡人.Email).Count() > 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Email重複");
+                }
+                else
+                {
+                    db.客戶聯絡人.Add(客戶聯絡人);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);

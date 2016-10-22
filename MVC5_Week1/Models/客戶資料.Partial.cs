@@ -24,6 +24,7 @@ namespace MVC5_Week1.Models
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
         [Required]
+        [RegularExpression(@"\d{4}-\d{6}", ErrorMessage = "電話格式錯誤")]
         public string 電話 { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
