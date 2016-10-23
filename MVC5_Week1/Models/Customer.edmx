@@ -26,7 +26,7 @@
           <Property Name="傳真" Type="nvarchar" MaxLength="50" />
           <Property Name="地址" Type="nvarchar" MaxLength="100" />
           <Property Name="Email" Type="nvarchar" MaxLength="250" />
-          <Property Name="isDelete" Type="bit" />
+          <Property Name="isDelete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="客戶銀行資訊">
           <Key>
@@ -119,7 +119,7 @@
           <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="客戶銀行資訊" Relationship="Self.FK_客戶銀行資訊_客戶資料" FromRole="客戶資料" ToRole="客戶銀行資訊" />
           <NavigationProperty Name="客戶聯絡人" Relationship="Self.FK_客戶聯絡人_客戶資料" FromRole="客戶資料" ToRole="客戶聯絡人" />
-          <Property Name="isDelete" Type="Boolean" />
+          <Property Name="isDelete" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="客戶銀行資訊">
           <Key>

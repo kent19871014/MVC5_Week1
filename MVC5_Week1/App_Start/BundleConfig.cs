@@ -25,6 +25,7 @@ namespace MVC5_Week1
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-sortable.css",
                       "~/Content/site.css"));
         }
     }

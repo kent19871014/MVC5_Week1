@@ -15,17 +15,31 @@ namespace MVC5_Week1.Controllers
         private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
-        public ActionResult Index(string search)
+        public ActionResult Index(string sortOrder, string search)
         {
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DeleteSortParm = sortOrder == "delete" ? "delete_desc" : "delete";
+            var data = db.客戶資料.ToList();
             if (!string.IsNullOrEmpty(search))
             {
-                var data = db.客戶資料.Where(p => p.客戶名稱.Contains(search) && p.isDelete != true);
-                return View(data);
+                data = data.Where(p => p.客戶名稱.Contains(search)).ToList();
             }
-            else
+            switch (sortOrder)
             {
-                return View(db.客戶資料.Where(q => q.isDelete != true).ToList());
+                case "name_desc":
+                    data = data.OrderByDescending(p => p.客戶名稱).ToList();
+                    break;
+                case "delete":
+                    data = data.OrderBy(p => p.isDelete).ToList();
+                    break;
+                case "delete_desc":
+                    data = data.OrderByDescending(p => p.isDelete).ToList();
+                    break;
+                default:
+                    data = data.OrderBy(p => p.客戶名稱).ToList();
+                    break;
             }
+            return View(data);
         }
 
         // GET: 客戶資料/Details/5
